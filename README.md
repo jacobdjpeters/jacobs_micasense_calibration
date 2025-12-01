@@ -43,12 +43,12 @@ I have a tempWorkingDir folder on my computer that I work from and then clear af
 	rm -r ./products/*
 ```
 
-These folders each have a purpose: 
-    * **images_copyTo_dontTouch**: this is where the raw images are stored and i, obviously, don't touch them. 
-    * **raw**: this is where i copy the images to and then start working. 
-    * **refl**: this is where calibrated and undistorted images are saved. 
-    * **datasets**: this is where OpenDroneMap looks for my project. Aligned multispectral photos are saved here. 
-    * **products**: this is where the final products are moved to. Mainly, that's the orthomosaic. 
+These directories each have a purpose: 
+* **images_copyTo_dontTouch**: this is where the raw images are stored and i, obviously, don't touch them. 
+* **raw**: this is where i copy the images to and then start working. 
+* **refl**: this is where calibrated and undistorted images are saved. 
+* **datasets**: this is where OpenDroneMap looks for my project. Aligned multispectral photos are saved here. 
+* **products**: this is where the final products are moved to. Mainly, that's the orthomosaic. 
 
 The structure looks like this, if the datasets/project/ directory hasn't been cleared: 
 

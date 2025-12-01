@@ -12,7 +12,7 @@ need to calibrate reflectance and align bands before uploading to ODM. Repos fro
 # workflow
 
 
-## VPN and Mount Drives
+## Connect to VPN and Mount Drives
 
 First, in my case, I need to connect to my university's VPN and mount my network drives. 
 
@@ -105,7 +105,7 @@ Sometimes I have multiple missions at each site, and I need to pick the best one
 
 ---
 
-##Copy files
+## Copy files
 
 ```
 # copy files from where ever. 
@@ -260,6 +260,8 @@ I have another repo with the scripts I need for reflectance calibration and alig
 
 That directory looks like this: 
 
+```
+
 jacobs_micasense_calibration
 ├── alignment_processing_rigRelatives.py
 ├── LICENSE
@@ -268,6 +270,7 @@ jacobs_micasense_calibration
 ├── process_flight_images_cap_autoPanel_DLS.py
 └── README.md
 
+```
 
 So run reflectance calibration... 
 

@@ -48,6 +48,8 @@ These folders each have a purpose:
 
 The structure looks like this, if the datasets/project/ directory hasn't been cleared: 
 
+```
+
 ├── datasets
 │   └── project
 │       ├── images
@@ -79,7 +81,7 @@ The structure looks like this, if the datasets/project/ directory hasn't been cl
 └── z_imagesForWarpMatrices
     ├── raw
     └── refl
-
+```
 
 ---
 

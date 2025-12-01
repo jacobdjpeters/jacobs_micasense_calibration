@@ -385,7 +385,7 @@ This isn't the point of this repo, but I feel it's worth including that I run th
 ```
 
 	# normalize brightness? this is new as of july 2025 ... can make for better visuals but not analysis. 
-	/mnt/hdd/Dropbox/cloned_repos/micasense_calibration/postProcess_normalization.py ./products/odm_orthophoto.tif ./products/odm_orthophoto_normalized.tif 
+	/mnt/hdd/Dropbox/cloned_repos/jacbos_micasense_calibration/postProcess_normalization.py ./products/odm_orthophoto.tif ./products/odm_orthophoto_normalized.tif 
 
 	
 	# options: --pansharpen --no-normalize 

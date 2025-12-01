@@ -1,13 +1,17 @@
-# micasense_calibration
+# Jacob's Micasense Calibration Tweaks
+
 Tweaks to micasense calibration for my UAV workflow. 
+
+By no means am I suggesting my way is better - but this is the workflow for my projects that has worked for me. 
+
 
 
 # notes
 
 need to calibrate reflectance and align bands before uploading to ODM. Repos from two sources. 
 
-    * Started here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Setup.html
-    * Then here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Tutorial%201.html
+* Started here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Setup.html
+* Then here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Tutorial%201.html
 
 # workflow
 

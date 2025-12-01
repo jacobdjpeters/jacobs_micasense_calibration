@@ -2,7 +2,7 @@
 
 Tweaks to micasense calibration for my UAV workflow. 
 
-By no means am I suggesting my way is better - but this is the workflow for my projects that has worked for me. 
+This is the workflow for my projects that has worked for me. 
 
 
 

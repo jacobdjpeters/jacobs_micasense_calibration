@@ -10,8 +10,8 @@ This is the workflow for my projects that has worked for me.
 
 need to calibrate reflectance and align bands before uploading to ODM. Repos from two sources. 
 
-* Started here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Setup.html
-* Then here: https://micasense.github.io/imageprocessing/MicaSense%20Image%20Processing%20Tutorial%201.html
+* Started here: https://github.com/micasense/imageprocessing
+* Then here: https://github.com/atedstone/micasense_calibration
 
 # workflow
 

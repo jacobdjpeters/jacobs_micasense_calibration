@@ -156,6 +156,8 @@ else:
     dls_correction = irr_from_panel/panelCap.dls_irradiance()
     print(f"DLS correction factors: {dls_correction}")
 
+if np.any(np.asarray(panelCap.dls_irradiance()) <= 0):
+        raise ValueError(f"Non-physical DLS irradiance at panel capture: {panelCap.dls_irradiance()}")
 
 
 print(f"Panel radiances: {panel_radiances}")
@@ -277,6 +279,9 @@ if overwrite or len(reflImageNames) <1:
         band_names = thecapture.eo_band_names()
         band_index = band_names.index(band)
      
+        # per-band correction factor
+        band_dls_correction = dls_correction[band_index]
+
      
         ## print dls irradiance values for this band.
         print(f"DLS Irradiance for band {band} ({band_index}): {cap.dls_irradiance()} ")

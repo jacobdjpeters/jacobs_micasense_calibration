@@ -200,6 +200,8 @@ if args.panelName_post:
     # Get post-flight panel time  
     panel_post_time = panelCap_post.images[0].utc_time
 
+if panel_post_time == panel_pre_time:
+    raise ValueError("Pre- and post-flight panel captures have identical timestamps — are they the same image?")
 
 
 # load images in

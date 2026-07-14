@@ -280,8 +280,6 @@ if overwrite or len(reflImageNames) <1:
         print(f"DLS Irradiance for band {band} ({band_index}): {cap.dls_irradiance()} ")
         
 
-        # Get the correction factor for this specific band
-        band_dls_correction = dls_correction[band_index]
 
         if args.panelName_post:
             band_dls_correction_post = dls_correction_post[band_index]

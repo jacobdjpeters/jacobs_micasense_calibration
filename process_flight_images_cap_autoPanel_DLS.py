@@ -179,6 +179,10 @@ if args.panelName_post:
         print(f"Post-flight panel radiances: {panel_radiances_post}")
         print(f"Post-flight DLS correction factors: {dls_correction_post}")
         
+        if args.panelName_post and args.use_dls != 'never':
+            dls_correction = (dls_correction + dls_correction_post) / 2.0
+            print(f"Mean DLS correction factors (pre+post): {dls_correction}")
+
         # Get timestamps for interpolation
         panel_pre_time = panelCap.images[0].utc_time
         panel_post_time = panelCap_post.images[0].utc_time
@@ -305,7 +309,7 @@ if overwrite or len(reflImageNames) <1:
             # Now apply the DLS mode with interpolated values
             if args.use_dls == 'never':
                 # Panel-only mode
-                dls_irr = interpolated_panel_irr / interpolated_dls_correction
+                dls_irr = interpolated_panel_irr / band_dls_correction
                 print(f"Using panel-only mode: {dls_irr:.4f}")
                 if args.panelName_post:
                     print(f"  (time interpolated, fraction: {time_fraction:.2f})")
@@ -320,7 +324,7 @@ if overwrite or len(reflImageNames) <1:
                 if dls_irr <= 0 or dls_irr > 1.3:
                     print(f"WARNING: Invalid DLS ({dls_irr:.4f}) for {fl_im_name}")
                     # Fallback to interpolated panel value
-                    fallback_irr = interpolated_panel_irr / interpolated_dls_correction
+                    fallback_irr = interpolated_panel_irr / band_dls_correction
                     print(f"Using panel-based fallback: {fallback_irr:.4f}")
                     dls_irr = fallback_irr
                 
@@ -331,9 +335,9 @@ if overwrite or len(reflImageNames) <1:
                 fl_im_refl = img.undistorted_reflectance(dls_irr)
             else:
                 # For DLS modes, apply the correction factor
-                fl_im_refl = img.undistorted_reflectance(dls_irr * interpolated_dls_correction)
-                print(f"Band {band}: DLS={dls_irr:.4f}, Correction={interpolated_dls_correction:.4f}")
-                print(f"Final irradiance: {dls_irr * interpolated_dls_correction:.4f}")
+                fl_im_refl = img.undistorted_reflectance(dls_irr * band_dls_correction)
+                print(f"Band {band}: DLS={dls_irr:.4f}, Correction={band_dls_correction:.4f}")
+                print(f"Final irradiance: {dls_irr * band_dls_correction:.4f}")
 
 
         print(f"reflectance after corrections, before scaling: {fl_im_refl.min()} to {fl_im_refl.max()}") # should be between 0 and 1.

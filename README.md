@@ -285,7 +285,7 @@ Note that I've had some problems with the DLS. At recent YMF drone zone flight, 
 # reflectance - correct lens distortion, correct per dls irradiance, convert to reflectance using panels and DLS. 
 
 	cd /mnt/hdd/Dropbox/SpatialData/droneData/tempWorkingDir
-	/mnt/hdd/Dropbox/cloned_repos/jacobs_micasense_calibration//process_flight_images_cap_autoPanel_DLS.py \
+	~/repos/jacobs_micasense_calibration/process_flight_images_cap_autoPanel_DLS.py \
     /mnt/hdd/Dropbox/SpatialData/droneData/tempWorkingDir/ \
     $imageName \
     panel_values.csv \
@@ -327,8 +327,9 @@ Remember that the alignment script will put images directly where OpenDroneMap w
 
 
 	# alignment -- after calibration. 
-	/mnt/hdd/Dropbox/cloned_repos/micasense_calibration/alignment_processing_rigRelatives.py /mnt/hdd/Dropbox/SpatialData/droneData/tempWorkingDir/ $imageName # default imageName is 'IMG_0005_*.tif'
-
+	# alignment
+	~/repos/jacobs_micasense_calibration/alignment_processing_rigRelatives.py \
+		/mnt/hdd/Dropbox/SpatialData/droneData/tempWorkingDir/ $imageName
 
 	cd /mnt/hdd/Dropbox/SpatialData/droneData/tempWorkingDir/
 	echo "Aligned photos should be available in ./datasets/project/images/"

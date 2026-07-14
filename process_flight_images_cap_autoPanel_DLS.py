@@ -297,6 +297,9 @@ if overwrite or len(reflImageNames) <1:
                 # Interpolate panel-based irradiance
                 interpolated_panel_irr = (irr_from_panel[band_index] * (1 - time_fraction) + 
                                         irr_from_panel_post[band_index] * time_fraction)
+                
+            else:
+                interpolated_panel_irr = irr_from_panel[band_index]
             
             # Now apply the DLS mode with interpolated values
             if args.use_dls == 'never':

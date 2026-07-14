@@ -192,6 +192,18 @@ if args.panelName_post:
         panel_post_time = panelCap_post.images[0].utc_time
 
 
+def find_post_panel(image_dir, exclude_prefix):
+    """Last hand-triggered (TriggerMethod 0) capture that isn't the pre-flight panel."""
+    band1 = sorted(glob.glob(os.path.join(image_dir, "IMG_*_1.tif")))
+    for path in reversed(band1):
+        prefix = re.sub(r"_1\.tif$", "", os.path.basename(path))
+        if prefix in exclude_prefix:
+            continue
+        cap = capture.Capture.from_filelist([path])
+        if str(cap.images[0].meta.get_item("XMP:TriggerMethod")) == "0":
+            return prefix + "_*.tif"
+    return None
+
 
 # Get acquisition times for interpolation
 if args.panelName_post:

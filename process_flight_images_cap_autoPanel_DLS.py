@@ -165,6 +165,8 @@ print(f"DLS correction factors: {dls_correction}")
 
 if args.panelName_post:
     panelNames_post = glob.glob(os.path.join(imagePath, args.panelName_post))
+    if not panelNames_post:
+        raise IOError(f"No post-flight panel images matched {args.panelName_post}")
     if panelNames_post:
         panelCap_post = capture.Capture.from_filelist(panelNames_post)
         # Process post panel similar to pre panel
@@ -295,14 +297,6 @@ if overwrite or len(reflImageNames) <1:
                 # Interpolate panel-based irradiance
                 interpolated_panel_irr = (irr_from_panel[band_index] * (1 - time_fraction) + 
                                         irr_from_panel_post[band_index] * time_fraction)
-                
-                # Interpolate DLS correction factor too
-                interpolated_dls_correction = (band_dls_correction * (1 - time_fraction) + 
-                                            band_dls_correction_post * time_fraction)
-            else:
-                # No interpolation - use pre-flight values
-                interpolated_panel_irr = irr_from_panel[band_index]
-                interpolated_dls_correction = band_dls_correction
             
             # Now apply the DLS mode with interpolated values
             if args.use_dls == 'never':

@@ -5,13 +5,41 @@ Tweaks to micasense calibration for my UAV workflow.
 This is the workflow for my projects that has worked for me. 
 
 
-
-# notes
-
-need to calibrate reflectance and align bands before uploading to ODM. Repos from two sources. 
+I need to calibrate reflectance and align bands before uploading to ODM. Repos from two sources. 
 
 * Started here: https://github.com/micasense/imageprocessing
 * Then here: https://github.com/atedstone/micasense_calibration
+
+
+## Dependencies
+
+Requires the [micasense/imageprocessing](https://github.com/micasense/imageprocessing) repo on your `PYTHONPATH` (provides `micasense.capture`, `micasense.image`, `micasense.panel`, `micasense.dls`, `micasense.imageutils`, `micasense.plotutils`, `micasense.imageset`), plus this repo (for `micasense_calibration.py`, imported as `mc`).
+
+### Conda env (`micasense`)
+
+```
+conda create -n micasense python=3.9
+conda activate micasense
+```
+
+### Python packages
+
+```
+pip install numpy pandas matplotlib opencv-python scikit-image 
+tifffile imageio PyExifTool pysolar pytz ipywidgets 
+gdal scipy mapboxgl
+```
+
+### System tools
+* `exiftool` (CLI, used via `subprocess`/`PyExifTool`)
+* `gdal` (system install, e.g. `conda install -c conda-forge gdal` or `apt install gdal-bin`)
+* Docker (for OpenDroneMap)
+
+### Notes
+* `alignment_processing_rigRelatives.py` hardcodes a `sys.path.insert` to the `imageprocessing` repo. You probably need to update that path for your machine, or rely on the `PYTHONPATH` export from the Working Directory step.
+* `mapboxgl` is only used for the geojson export in the alignment script.
+
+
 
 # workflow
 

@@ -1,0 +1,97 @@
+diff --git a/batch_processing_script.py b/batch_processing_script.py
+index 7708a94..af6eaed 100644
+--- a/batch_processing_script.py
++++ b/batch_processing_script.py
+@@ -86,7 +86,7 @@ if panelCap is not None:
+     if panelCap.panel_albedo() is not None and not any(v is None for v in panelCap.panel_albedo()):
+         panel_reflectance_by_band = panelCap.panel_albedo()
+     else:
+-        panel_reflectance_by_band = [0.49] * len(panelCap.eo_band_names())  # RedEdge band_index order
++        panel_reflectance_by_band = [0.47] * len(panelCap.eo_band_names())  # RedEdge-P band_index order
+ 
+     panel_irradiance = panelCap.panel_irradiance(panel_reflectance_by_band)
+     img_type = "reflectance"
+diff --git a/micasense/capture.py b/micasense/capture.py
+index e5eeea9..b53db6f 100644
+--- a/micasense/capture.py
++++ b/micasense/capture.py
+@@ -587,7 +587,7 @@ class Capture(object):
+         driver = GetDriverByName('GTiff')
+ 
+         outRaster = driver.Create(outfilename, cols, rows, bands, GDT_UInt16,
+-                                  options=['INTERLEAVE=BAND', 'COMPRESS=DEFLATE', f'PHOTOMETRIC={photometric}'])
++                                  options=['INTERLEAVE=BAND', 'COMPRESS=NONE', f'PHOTOMETRIC={photometric}']) # note Jacob edits: changed COMPRESS=DEFLATE to NONE
+         try:
+             if outRaster is None:
+                 raise IOError("could not load gdal GeoTiff driver")
+@@ -608,7 +608,7 @@ class Capture(object):
+                 outdata[outdata < 0] = 0
+                 outdata[outdata > 2] = 2  # limit reflectance data to 200% to allow some specular reflections
+                 outdata = outdata * 32767 # scale reflectance images so 100% = 32768
+-                outdata = outdata.astype(np.ushort)
++                outdata = outdata.astype(np.ushort) 
+                 outband.SetDescription(eo_bands[outband_count])
+                 outband.WriteArray(outdata)
+                 outband.FlushCache()
+diff --git a/micasense/imageutils.py b/micasense/imageutils.py
+index 4f16348..27dd99c 100644
+--- a/micasense/imageutils.py
++++ b/micasense/imageutils.py
+@@ -34,6 +34,7 @@ from skimage.morphology import binary_closing
+ from skimage.morphology import disk
+ from skimage.transform import warp
+ from skimage.util import img_as_ubyte
++import matplotlib.pyplot as plt
+ 
+ 
+ # start helper functions for finding a "hole"-free rectangle
+@@ -359,7 +360,7 @@ def aligned_capture(capture, warp_matrices, warp_mode, cropped_dimensions, match
+     im_aligned = np.zeros((height, width, len(warp_matrices)), dtype=np.float32)
+ 
+     for i in range(0, len(warp_matrices)):
+-        if img_type == 'reflectance':
++        if img_type == 'reflectance': 
+             img = capture.images[i].undistorted_reflectance()
+         else:
+             img = capture.images[i].undistorted_radiance()
+@@ -379,6 +380,40 @@ def aligned_capture(capture, warp_matrices, warp_mode, cropped_dimensions, match
+ 
+     return im_cropped
+ 
++def aligned_capture_jp(capture, warp_matrices, warp_mode, cropped_dimensions, match_index, img_type='reflectance',
++                    interpolation_mode=cv2.INTER_LANCZOS4):
++    width, height = capture.images[match_index].size()
++
++    im_aligned = np.zeros((height, width, len(warp_matrices)), dtype=np.float32) # change from float32 to uint16 ? warp matrices made from uint16 image. 
++
++    for i in range(0, len(warp_matrices)):
++        # if img_type == 'reflectance': # - Jacob changed from undistorted_reflectance. I already calibrated and undistorted images. so dont do that. 
++        #    img = capture.images[i].reflectance()
++        # else:
++        #    img = capture.images[i].radiance()
++
++        # try this
++
++        img = plt.imread(capture.images[i].path).astype(np.uint16) # this works, just load the image ffs. stop f'ing with pixel values!!!! 
++
++
++        if warp_mode != cv2.MOTION_HOMOGRAPHY:
++            im_aligned[:, :, i] = cv2.warpAffine(img,
++                                                 warp_matrices[i],
++                                                 (width, height),
++                                                 flags=interpolation_mode + cv2.WARP_INVERSE_MAP) 
++        else:
++            im_aligned[:, :, i] = cv2.warpPerspective(img,
++                                                      warp_matrices[i],
++                                                      (width, height),
++                                                      flags=interpolation_mode + cv2.WARP_INVERSE_MAP)
++    (left, top, w, h) = tuple(int(i) for i in cropped_dimensions)
++    im_cropped = im_aligned[top:top + h, left:left + w][:]
++
++    return im_cropped
++
++
++
+ 
+ class BoundPoint(object):
+     def __init__(self, x=0, y=0):

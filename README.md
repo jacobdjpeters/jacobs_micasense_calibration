@@ -11,6 +11,35 @@ I need to calibrate reflectance and align bands before uploading to ODM. Repos f
 * Then here: https://github.com/atedstone/micasense_calibration
 
 
+
+## Tweaks to imageprocessing
+
+I made some changes that suited my particular workflow to the library in https://github.com/micasense/imageprocessing
+
+So this workflow requires the MicaSense `imageprocessing` library with local edits
+(namely, the `aligned_capture_jp` function and an uncompressed-output change).
+
+### Setup
+
+1. Clone upstream at the pinned commit:
+   git clone https://github.com/micasense/imageprocessing.git
+   cd imageprocessing
+   git checkout 3a903861b2f38c1717a5b6d918a2d9196db507ae
+
+2. Apply the patch from this repo (be sure to update your file path):
+   git apply /path/to/jacobs_micasense_calibration/jacobs_imageprocessing_edits.patch
+
+3. Set PYTHONPATH to both repos (be sure to update your file path):
+   export PYTHONPATH=/path/to/imageprocessing:/path/to/jacobs_micasense_calibration
+
+### Changes Made
+- micasense/imageutils.py: adds `aligned_capture_jp` (alignment without re-undistorting already-calibrated images, essential if you follow my workflow below)
+- micasense/capture.py: `save_capture_as_stack` writes uncompressed (COMPRESS=NONE) instead of DEFLATE
+- batch_processing_script.py: RedEdge-P panel reflectance default 0.47
+
+
+
+
 ## Dependencies
 
 Requires the [micasense/imageprocessing](https://github.com/micasense/imageprocessing) repo on your `PYTHONPATH` (provides `micasense.capture`, `micasense.image`, `micasense.panel`, `micasense.dls`, `micasense.imageutils`, `micasense.plotutils`, `micasense.imageset`), plus this repo (for `micasense_calibration.py`, imported as `mc`).
